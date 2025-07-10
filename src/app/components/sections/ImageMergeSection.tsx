@@ -13,37 +13,38 @@ if (typeof window !== "undefined") {
 export default function ImageMergeSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const imagesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const textRef = useRef<HTMLDivElement>(null);
 
   // 건축물 이미지 데이터
   const architectureImages = [
     {
       id: 1,
-      src: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop",
+      src: "/images/projects/building1.jpg",
       alt: "Modern Skyscraper",
     },
     {
       id: 2,
-      src: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1000&auto=format&fit=crop",
+      src: "/images/projects/building2.jpg",
       alt: "Contemporary Office Building",
     },
     {
       id: 3,
-      src: "https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=1000&auto=format&fit=crop",
+      src: "/images/projects/building3.jpg",
       alt: "Architectural Design",
     },
     {
       id: 4,
-      src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1000&auto=format&fit=crop",
+      src: "/images/projects/building4.jpg",
       alt: "Modern Architecture",
     },
     {
       id: 5,
-      src: "https://images.unsplash.com/photo-1567496898669-ee935f5f647a?q=80&w=1000&auto=format&fit=crop",
+      src: "/images/projects/building5.jpg",
       alt: "Urban Building",
     },
     {
       id: 6,
-      src: "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=1000&auto=format&fit=crop",
+      src: "/images/projects/building6.jpg",
       alt: "Commercial Architecture",
     },
   ];
@@ -54,23 +55,9 @@ export default function ImageMergeSection() {
 
     if (!section || images.some((img) => !img)) return;
 
-    // 반응형 사이즈 계산
-    const getResponsiveValues = () => {
-      const width = window.innerWidth;
-      if (width < 768) {
-        // 모바일
-        return { radius: 220 };
-      } else if (width < 1024) {
-        // 태블릿
-        return { radius: 300 };
-      } else {
-        // 데스크톱
-        return { radius: 380 };
-      }
-    };
-
     const setupAnimation = () => {
-      const { radius } = getResponsiveValues();
+      // 간단한 뷰포트 기준 반지름 (이미지 크기에 맞춰 조정)
+      const radius = Math.min(window.innerWidth * 0.28, 400);
 
       // 각 이미지의 초기 원형 위치 설정
       images.forEach((image, index) => {
@@ -91,6 +78,14 @@ export default function ImageMergeSection() {
         });
       });
 
+      // 텍스트 초기 설정
+      if (textRef.current) {
+        gsap.set(textRef.current, {
+          scale: 1,
+          transformOrigin: "center center",
+        });
+      }
+
       // ScrollTrigger 애니메이션 생성
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -104,6 +99,7 @@ export default function ImageMergeSection() {
             // 애니메이션 진행률
             const progress = self.progress;
 
+            // 이미지 애니메이션
             images.forEach((image, index) => {
               if (!image) return;
 
@@ -131,6 +127,14 @@ export default function ImageMergeSection() {
                 scale: currentScale,
               });
             });
+
+            // 텍스트 스케일 애니메이션 (스크롤에 따라 점점 커짐)
+            if (textRef.current) {
+              const textScale = 1 + progress * 2; // 1배에서 3배까지 커짐
+              gsap.set(textRef.current, {
+                scale: textScale,
+              });
+            }
           },
         },
       });
@@ -138,20 +142,7 @@ export default function ImageMergeSection() {
       return tl;
     };
 
-    let animation = setupAnimation();
-
-    // 리사이즈 이벤트 처리
-    const handleResize = () => {
-      animation?.kill();
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.trigger === section) {
-          trigger.kill();
-        }
-      });
-      animation = setupAnimation();
-    };
-
-    window.addEventListener("resize", handleResize);
+    const animation = setupAnimation();
 
     return () => {
       animation?.kill();
@@ -160,14 +151,13 @@ export default function ImageMergeSection() {
           trigger.kill();
         }
       });
-      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="relative z-30 min-h-screen bg-white flex items-center justify-center overflow-hidden"
+      className="relative z-30 w-full h-screen bg-white flex items-center justify-center overflow-hidden"
     >
       {/* 배경 장식 요소 */}
       <div className="absolute inset-0">
@@ -177,6 +167,19 @@ export default function ImageMergeSection() {
 
       {/* 중앙 컨테이너 */}
       <div className="relative w-full h-full flex items-center justify-center">
+        {/* PORTFOLIO 텍스트 */}
+        <div
+          ref={textRef}
+          className="absolute z-20 text-6xl sm:text-7xl lg:text-8xl font-bold tracking-wider select-none"
+          style={{
+            mixBlendMode: "difference",
+            color: "white",
+            fontFamily: '"Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+          }}
+        >
+          PORTFOLIO
+        </div>
+
         {/* 이미지들 */}
         {architectureImages.map((image, index) => (
           <div
@@ -186,14 +189,14 @@ export default function ImageMergeSection() {
             }}
             className="absolute z-10"
           >
-            <div className="relative w-48 h-48 sm:w-60 sm:h-60 lg:w-72 lg:h-72 overflow-hidden">
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                className="object-cover"
-                sizes="(max-width: 640px) 192px, (max-width: 1024px) 240px, 288px"
-              />
+            <div
+              className="relative overflow-hidden"
+              style={{
+                width: `clamp(200px, 22vw, 288px)`,
+                height: `clamp(200px, 22vw, 288px)`,
+              }}
+            >
+              <Image src={image.src} alt={image.alt} fill className="object-cover" sizes="22vw" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             </div>
           </div>

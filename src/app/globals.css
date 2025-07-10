@@ -34,6 +34,92 @@ body {
   color: var(--foreground);
   font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
     "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif !important;
+  cursor: none !important;
+  overflow-x: hidden;
+}
+
+* {
+  cursor: none !important;
+}
+
+/* 성능 최적화를 위한 스타일 */
+.transform-gpu {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* 트랜지션 애니메이션 최적화 */
+[data-framer-motion] {
+  will-change: transform, opacity;
+}
+
+/* 부드러운 스크롤 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 인터랙티브 요소들 */
+button,
+a,
+[data-cursor-hover] {
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+}
+
+/* 글리치 효과를 위한 키프레임 */
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+.glitch {
+  animation: glitch 0.3s infinite;
+}
+
+/* 리플 효과 */
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ripple {
+  animation: ripple 0.6s ease-out;
+}
+
+/* 모던 스크롤바 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
 }
 
 h1,

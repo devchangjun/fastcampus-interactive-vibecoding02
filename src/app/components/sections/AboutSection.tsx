@@ -96,9 +96,9 @@ export default function AboutSection() {
 
             {/* Right Column - Image */}
             <motion.div variants={itemVariants} className="relative h-[500px] lg:h-[600px] overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/10 z-10" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent z-10" />
               <Image
-                src="/images/about-image.jpg"
+                src="/images/about-image.png"
                 alt="Modern Interior Design"
                 fill
                 className="object-cover"
