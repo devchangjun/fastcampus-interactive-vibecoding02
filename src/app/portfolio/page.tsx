@@ -1,6 +1,5 @@
 import PortfolioListClient from "./PortfolioListClient";
 import { projectsData } from "../lib/projectData";
-import PageTransition from "../components/commons/PageTransition";
 
 export const metadata = {
   title: "포트폴리오 - 더 스페이스 랩",
@@ -8,9 +7,5 @@ export const metadata = {
 };
 
 export default function PortfolioPage() {
-  return (
-    <PageTransition>
-      <PortfolioListClient projects={projectsData} />
-    </PageTransition>
-  );
+  return <PortfolioListClient projects={projectsData} />;
 }
