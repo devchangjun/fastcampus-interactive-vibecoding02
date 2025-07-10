@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import TransitionLink from "../../components/commons/TransitionLink";
 import { ProjectData } from "../../lib/projectData";
 
 interface ProjectDetailClientProps {
@@ -298,7 +298,7 @@ export default function ProjectDetailClient({
                   transition={{ duration: 0.8, delay: index * 0.1 }}
                   viewport={{ once: true }}
                 >
-                  <Link href={`/portfolio/${relatedProject.id}`} className="group block">
+                  <TransitionLink href={`/portfolio/${relatedProject.id}`} className="group block">
                     <div className="relative aspect-[4/3] overflow-hidden bg-gray-200 mb-4">
                       <Image
                         src={relatedProject.image}
@@ -317,7 +317,7 @@ export default function ProjectDetailClient({
                       </p>
                       <p className="text-gray-700 line-clamp-2">{relatedProject.description}</p>
                     </div>
-                  </Link>
+                  </TransitionLink>
                 </motion.div>
               ))}
             </div>
@@ -331,7 +331,7 @@ export default function ProjectDetailClient({
           <div className="flex items-center justify-between">
             {/* 이전 프로젝트 */}
             {prevProject ? (
-              <Link href={`/portfolio/${prevProject.id}`} className="group flex items-center gap-4">
+              <TransitionLink href={`/portfolio/${prevProject.id}`} className="group flex items-center gap-4">
                 <div className="w-8 h-8 flex items-center justify-center border border-gray-300 group-hover:border-black group-hover:bg-black group-hover:text-white transition-all">
                   <span className="text-sm">←</span>
                 </div>
@@ -339,22 +339,22 @@ export default function ProjectDetailClient({
                   <p className="text-sm text-gray-500 mb-1">이전 프로젝트</p>
                   <p className="font-medium text-gray-900 group-hover:text-black">{prevProject.title}</p>
                 </div>
-              </Link>
+              </TransitionLink>
             ) : (
               <div />
             )}
 
             {/* 목록으로 돌아가기 */}
-            <Link
+            <TransitionLink
               href="/portfolio"
               className="group px-6 py-3 border border-gray-300 hover:border-black hover:bg-black hover:text-white transition-all"
             >
               <span className="font-medium">포트폴리오 목록</span>
-            </Link>
+            </TransitionLink>
 
             {/* 다음 프로젝트 */}
             {nextProject ? (
-              <Link href={`/portfolio/${nextProject.id}`} className="group flex items-center gap-4">
+              <TransitionLink href={`/portfolio/${nextProject.id}`} className="group flex items-center gap-4">
                 <div className="text-right">
                   <p className="text-sm text-gray-500 mb-1">다음 프로젝트</p>
                   <p className="font-medium text-gray-900 group-hover:text-black">{nextProject.title}</p>
@@ -362,7 +362,7 @@ export default function ProjectDetailClient({
                 <div className="w-8 h-8 flex items-center justify-center border border-gray-300 group-hover:border-black group-hover:bg-black group-hover:text-white transition-all">
                   <span className="text-sm">→</span>
                 </div>
-              </Link>
+              </TransitionLink>
             ) : (
               <div />
             )}

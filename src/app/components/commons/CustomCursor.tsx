@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 export default function CustomCursor() {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [debugInfo, setDebugInfo] = useState("");
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -27,11 +26,9 @@ export default function CustomCursor() {
       if (hasPortfolioAttr && !isHovered) {
         console.log("🎯 Found portfolio element at cursor position!", elementsAtPoint);
         setIsHovered(true);
-        setDebugInfo("Portfolio found at cursor position!");
       } else if (!hasPortfolioAttr && isHovered) {
         console.log("👋 No portfolio element at cursor position");
         setIsHovered(false);
-        setDebugInfo("No portfolio at cursor position");
       }
     };
 
@@ -42,7 +39,6 @@ export default function CustomCursor() {
     const testInterval = setInterval(() => {
       const buttons = document.querySelectorAll('[data-cursor-hover="portfolio"]');
       console.log(`🔍 [${new Date().toLocaleTimeString()}] Found ${buttons.length} portfolio buttons`);
-      setDebugInfo(`Test: ${buttons.length} buttons found at ${new Date().toLocaleTimeString()}`);
 
       if (buttons.length > 0) {
         console.log("First button:", buttons[0]);

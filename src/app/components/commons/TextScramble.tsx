@@ -71,7 +71,7 @@ const TextScramble: React.FC<TextScrambleProps> = ({
       }, delay);
       return () => clearTimeout(timeoutId);
     }
-  }, []);
+  }, [delay, scrambleText, trigger]);
 
   useEffect(() => {
     if (trigger === "inView" && isInView) {
@@ -80,7 +80,7 @@ const TextScramble: React.FC<TextScrambleProps> = ({
       }, delay);
       return () => clearTimeout(timeoutId);
     }
-  }, [isInView]);
+  }, [isInView, delay, scrambleText, trigger]);
 
   return (
     <span ref={ref} className={className}>

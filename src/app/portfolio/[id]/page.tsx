@@ -3,11 +3,12 @@ import { getProjectById, getRelatedProjects, getPrevNextProjects } from "../../l
 import ProjectDetailClient from "./ProjectDetailClient";
 
 interface ProjectPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export default function ProjectPage({ params }: ProjectPageProps) {
-  const projectId = parseInt(params.id);
+export default async function ProjectPage({ params }: ProjectPageProps) {
+  const { id } = await params;
+  const projectId = parseInt(id);
 
   if (isNaN(projectId)) {
     notFound();

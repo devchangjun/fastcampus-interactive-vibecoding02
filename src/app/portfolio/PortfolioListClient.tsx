@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useState, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import TransitionLink from "../components/commons/TransitionLink";
 import { ProjectData } from "../lib/projectData";
 
 interface PortfolioListClientProps {
@@ -136,7 +136,7 @@ export default function PortfolioListClient({ projects }: PortfolioListClientPro
                 transition={{ duration: 0.3 }}
                 className="group"
               >
-                <Link href={`/portfolio/${project.id}`}>
+                <TransitionLink href={`/portfolio/${project.id}`}>
                   {/* 프로젝트 이미지 */}
                   <div className="relative aspect-[4/3] overflow-hidden bg-gray-100 mb-6">
                     <Image
@@ -209,7 +209,7 @@ export default function PortfolioListClient({ projects }: PortfolioListClientPro
                       </span>
                     </div>
                   </div>
-                </Link>
+                </TransitionLink>
               </motion.div>
             ))}
           </motion.div>
@@ -244,7 +244,7 @@ export default function PortfolioListClient({ projects }: PortfolioListClientPro
               <br />
               당신의 꿈을 현실로 만들어보세요.
             </p>
-            <Link href="/contact">
+            <TransitionLink href="/contact">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -252,7 +252,7 @@ export default function PortfolioListClient({ projects }: PortfolioListClientPro
               >
                 <span className="relative z-10">프로젝트 문의하기</span>
               </motion.button>
-            </Link>
+            </TransitionLink>
           </motion.div>
         </div>
       </section>

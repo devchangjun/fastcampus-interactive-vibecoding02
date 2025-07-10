@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "./components/commons/Header";
 import CustomCursor from "./components/commons/CustomCursor";
+import { PageTransitionProvider } from "./components/commons/PageTransition";
 
 export const metadata: Metadata = {
   title: "더 스페이스 랩 - 공간에 새로운 가치를 더하는 혁신적인 디자인",
@@ -30,9 +31,11 @@ export default function RootLayout({
             '"Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif',
         }}
       >
-        <Header />
-        {children}
-        <CustomCursor />
+        <PageTransitionProvider>
+          <Header />
+          {children}
+          <CustomCursor />
+        </PageTransitionProvider>
       </body>
     </html>
   );
