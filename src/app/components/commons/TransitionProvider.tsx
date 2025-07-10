@@ -30,7 +30,7 @@ export default function TransitionProvider({ children }: TransitionProviderProps
   const startTransition = (href: string) => {
     setIsTransitioning(true);
 
-    // 1초 후에 실제 페이지 이동
+    // 1.5초 후에 실제 페이지 이동 (검은 화면이 완전히 덮은 후)
     setTimeout(() => {
       router.push(href);
 
@@ -38,7 +38,7 @@ export default function TransitionProvider({ children }: TransitionProviderProps
       setTimeout(() => {
         setIsTransitioning(false);
       }, 500);
-    }, 1000);
+    }, 1500);
   };
 
   return (
@@ -48,34 +48,26 @@ export default function TransitionProvider({ children }: TransitionProviderProps
       {/* 트랜지션 오버레이 */}
       <AnimatePresence>
         {isTransitioning && (
-          <>
-            {/* 메인 원형 트랜지션 */}
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 200 }}
-              exit={{ scale: 200, opacity: 0 }}
-              transition={{
-                duration: 1,
-                ease: [0.76, 0, 0.24, 1],
-              }}
-              className="fixed top-1/2 left-1/2 w-4 h-4 bg-black z-[9999] -translate-x-1/2 -translate-y-1/2"
-              style={{
-                borderRadius: "50%",
-              }}
-            />
-
-            {/* 보조 오버레이 (더 부드러운 효과) */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.1 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                duration: 0.5,
-                delay: 0.3,
-              }}
-              className="fixed inset-0 bg-black z-[9998]"
-            />
-          </>
+          <motion.div
+            initial={{
+              scaleY: 0,
+              transformOrigin: "bottom",
+            }}
+            animate={{
+              scaleY: [0, 1, 1, 0],
+              transformOrigin: "bottom",
+            }}
+            exit={{
+              scaleY: 0,
+              transformOrigin: "bottom",
+            }}
+            transition={{
+              duration: 2,
+              times: [0, 0.35, 0.65, 1], // 0-35%: 올라오기, 35-65%: 멈춤, 65-100%: 사라지기
+              ease: [0.76, 0, 0.24, 1],
+            }}
+            className="fixed inset-0 bg-black z-[9999]"
+          />
         )}
       </AnimatePresence>
     </TransitionContext.Provider>

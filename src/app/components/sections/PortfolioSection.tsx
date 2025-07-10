@@ -3,8 +3,8 @@
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { projectsData, ProjectData } from "../../lib/projectData";
+import { useTransition } from "../commons/TransitionProvider";
 
 interface ProjectCardProps {
   project: ProjectData;
@@ -14,6 +14,7 @@ interface ProjectCardProps {
 }
 
 function ProjectCard({ project, index, totalProjects, scrollYProgress }: ProjectCardProps) {
+  const { startTransition } = useTransition();
   const targetScale = 1 - (totalProjects - index) * 0.05;
   const isLast = index === totalProjects - 1;
 
@@ -28,6 +29,10 @@ function ProjectCard({ project, index, totalProjects, scrollYProgress }: Project
     [index * (1 / totalProjects), (index + 1) * (1 / totalProjects)],
     ["0%", "-5%"]
   );
+
+  const handleNavigation = () => {
+    startTransition(`/portfolio/${project.id}`);
+  };
 
   return (
     <motion.div
@@ -119,14 +124,14 @@ function ProjectCard({ project, index, totalProjects, scrollYProgress }: Project
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
               >
-                <Link
-                  href={`/portfolio/${project.id}`}
+                <button
+                  onClick={handleNavigation}
                   className="group relative inline-block px-8 py-4 border border-white text-white font-medium tracking-wider transition-all duration-300 hover:bg-white hover:text-transparent backdrop-blur-sm cursor-pointer"
                   data-cursor-hover="portfolio"
                 >
                   <span className="relative z-10">프로젝트 보기</span>
                   <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </Link>
+                </button>
               </motion.div>
             </div>
           </div>

@@ -2,11 +2,12 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useTransition } from "./TransitionProvider";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { startTransition } = useTransition();
 
   const navigationItems = [
     { name: "홈", href: "/" },
@@ -34,6 +35,15 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const handleNavigation = (href: string) => {
+    startTransition(href);
+  };
+
+  const handleMobileNavigation = (href: string) => {
+    closeMobileMenu();
+    startTransition(href);
+  };
+
   return (
     <>
       <motion.header
@@ -48,7 +58,7 @@ const Header = () => {
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
-              <Link href="/" className="flex items-center space-x-2">
+              <button onClick={() => handleNavigation("/")} className="flex items-center space-x-2">
                 <span
                   className={`text-xl lg:text-2xl font-bold tracking-wider transition-colors duration-300 ${
                     isScrolled ? "text-gray-900" : "text-white"
@@ -59,7 +69,7 @@ const Header = () => {
                 >
                   THE SPACE LAB
                 </span>
-              </Link>
+              </button>
             </motion.div>
 
             {/* Desktop Navigation */}
@@ -71,8 +81,8 @@ const Header = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <Link
-                    href={item.href}
+                  <button
+                    onClick={() => handleNavigation(item.href)}
                     className={`relative text-sm font-medium tracking-wide transition-colors duration-300 group ${
                       isScrolled ? "text-gray-700 hover:text-black" : "text-white/90 hover:text-white"
                     }`}
@@ -83,7 +93,7 @@ const Header = () => {
                         isScrolled ? "bg-black" : "bg-white"
                       }`}
                     />
-                  </Link>
+                  </button>
                 </motion.div>
               ))}
             </nav>
@@ -180,15 +190,14 @@ const Header = () => {
                           ease: "easeOut",
                         }}
                       >
-                        <Link
-                          href={item.href}
-                          onClick={closeMobileMenu}
-                          className="block text-lg font-medium text-gray-900 hover:text-black transition-colors py-2 group"
+                        <button
+                          onClick={() => handleMobileNavigation(item.href)}
+                          className="block text-lg font-medium text-gray-900 hover:text-black transition-colors py-2 group w-full text-left"
                         >
                           <motion.span whileHover={{ x: 10 }} transition={{ duration: 0.2 }} className="block">
                             {item.name}
                           </motion.span>
-                        </Link>
+                        </button>
                       </motion.li>
                     ))}
                   </ul>

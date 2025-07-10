@@ -3,8 +3,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useState, useRef } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { ProjectData } from "../lib/projectData";
+import { useTransition } from "../components/commons/TransitionProvider";
 
 interface PortfolioListClientProps {
   projects: ProjectData[];
@@ -14,6 +14,7 @@ export default function PortfolioListClient({ projects }: PortfolioListClientPro
   const [selectedCategory, setSelectedCategory] = useState<string>("전체");
   const ref = useRef(null);
   const { scrollY } = useScroll();
+  const { startTransition } = useTransition();
 
   // Transform scroll position to scale value
   const scale = useTransform(scrollY, [0, 100], [1, 2.6]);
@@ -24,6 +25,10 @@ export default function PortfolioListClient({ projects }: PortfolioListClientPro
   // 필터링된 프로젝트
   const filteredProjects =
     selectedCategory === "전체" ? projects : projects.filter((project) => project.category === selectedCategory);
+
+  const handleNavigation = (href: string) => {
+    startTransition(href);
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -136,7 +141,7 @@ export default function PortfolioListClient({ projects }: PortfolioListClientPro
                 transition={{ duration: 0.3 }}
                 className="group"
               >
-                <Link href={`/portfolio/${project.id}`}>
+                <button onClick={() => handleNavigation(`/portfolio/${project.id}`)} className="block w-full text-left">
                   {/* 프로젝트 이미지 */}
                   <div className="relative aspect-[4/3] overflow-hidden bg-gray-100 mb-6">
                     <Image
@@ -209,7 +214,7 @@ export default function PortfolioListClient({ projects }: PortfolioListClientPro
                       </span>
                     </div>
                   </div>
-                </Link>
+                </button>
               </motion.div>
             ))}
           </motion.div>
@@ -244,15 +249,14 @@ export default function PortfolioListClient({ projects }: PortfolioListClientPro
               <br />
               당신의 꿈을 현실로 만들어보세요.
             </p>
-            <Link href="/contact">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="group px-8 py-4 bg-black text-white font-medium tracking-wider transition-all duration-300 hover:bg-gray-800"
-              >
-                <span className="relative z-10">프로젝트 문의하기</span>
-              </motion.button>
-            </Link>
+            <motion.button
+              onClick={() => handleNavigation("/contact")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="group px-8 py-4 bg-black text-white font-medium tracking-wider transition-all duration-300 hover:bg-gray-800"
+            >
+              <span className="relative z-10">프로젝트 문의하기</span>
+            </motion.button>
           </motion.div>
         </div>
       </section>
